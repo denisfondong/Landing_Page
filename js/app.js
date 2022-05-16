@@ -1,66 +1,49 @@
 
 //Define Global Variables
-
-let navBarList = document.getElementById("navbar__list");
-let sections = document.querySelectorAll("section");
-let navBar = document.querySelector("navbar__menu");
+const sections = document.querySelectorAll("section");
+const navbarList = document.getElementById("navbar__list");
 
 // build the nav
 
 function navBuilder() {
-  sections.forEach(section => {
-    const itemList = document.createElement("li");
-    itemList.insertAdjacentHTML("afterbegin", `<a href="#${section.id}" class="menu__link">${section.dataset.nav}</a>`);
-
-    navBarList.appendChild(itemList);
-  });
+  for (let section of sections) {
+    const newListItem = document.createElement("li");
+    newListItem.innerHTML = `<a href="#${section.getAttribute('id')}" class="menu__link">
+	${section.getAttribute("data-nav")}</a>`;
+    navbarList.appendChild(newListItem);
+  }
 }
 navBuilder();
 
 // Add class 'active' to section when near top of viewport
-const addActive = function (conditional, section) {
-  if (conditional) {
-    section.classList.add("your-active-class");
-    //change style of active section
-    section.style.cssText = "background-color:indigo;";
+function inViewPort() {
+  for (let section of sections) {
+    box = section.getBoundingClientRect();
+    if (box.top < 150 && box.bottom > -150) {
+      if (!section.classList.contains("your-active-class")) {
+        section.classList.add("your-active-class");
+        //change background color for active class
+        section.style.backgroundColor = "indigo";
+      }
+    } else {
+      if (section.classList.contains("your-active-class")) {
+        section.classList.remove("your-active-class");
+        section.style.backgroundColor = "black";
+      }
+    }
   };
-};
-const removeActive = function (section) {
-  section.classList.remove("your-active-class");
-  //remove box shadow from inactive section 
-  section.style.cssText = "background-color:linear-gradient(0deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.2) 100%)";
-};
-//Calculate offset of the section.
-const offset = function (section) {
-  return Math.floor(section.getBoundingClientRect().top);
-};
-
-const sectionActivation = function () {
-  sections.forEach(section => {
-    const elementOffset = offset(section);
-
-    inviewport = () => elementOffset < 380 && elementOffset >= -350;
-
-    removeActive(section);
-    addActive(inviewport(), section);
-  });
-};
-window.addEventListener("scroll", sectionActivation);
+}
+inViewPort();
 
 // Scroll to anchor ID using scrollTO event
-const scrollBehavior = () => {
-  //Select all the links
-  const links = document.querySelectorAll("navbar__menu a");
-  links.forEach(link => {
-    link.addEventListener("click", () => {
-      for (i = 0; i < sections; i++) {
-        section[i].addEventListener("click", sectionScroll(link));
-      }
-    });
+
+function smoothScroll(el) {
+  window.scrollTo({
+    top: getElementOffset(el).top - nav.offsetHeight,
+    left: getElementOffset(el).left,
+    behavior: "smooth"
   });
-};
-scrollBehavior();
+}
+
 // Scroll to section on link click
-window.addEventListener("scroll", (e) => {
-  addActive();
-});
+window.addEventListener("scroll", inViewPort);
