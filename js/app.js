@@ -1,4 +1,3 @@
-
 //Define Global Variables
 const sections = document.querySelectorAll("section");
 const navbarList = document.getElementById("navbar__list");
@@ -31,19 +30,19 @@ function inViewPort() {
         section.style.backgroundColor = "black";
       }
     }
-  };
+  }
 }
-inViewPort();
-
-// Scroll to anchor ID using scrollTO event
-
-function smoothScroll(el) {
-  window.scrollTo({
-    top: getElementOffset(el).top - nav.offsetHeight,
-    left: getElementOffset(el).left,
-    behavior: "smooth"
-  });
-}
-
 // Scroll to section on link click
 window.addEventListener("scroll", inViewPort);
+
+//smooth scroll
+const sectionScroll = () => {
+  navbarList.addEventListener("click", (event) => {
+    if (event.target.dataset.nav) {
+      document.getElementById(`${event.target.dataset.nav}`).scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  });
+}
+sectionScroll();
