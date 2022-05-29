@@ -17,7 +17,7 @@ navBuilder();
 // Add class 'active' to section when near top of viewport
 function inViewPort() {
   for (let section of sections) {
-    box = section.getBoundingClientRect();
+    const box = section.getBoundingClientRect();
     if (box.top < 150 && box.bottom > -150) {
       if (!section.classList.contains("your-active-class")) {
         section.classList.add("your-active-class");
@@ -25,24 +25,24 @@ function inViewPort() {
         section.style.backgroundColor = "indigo";
       }
     } else {
-      if (section.classList.contains("your-active-class")) {
-        section.classList.remove("your-active-class");
-        section.style.backgroundColor = "black";
-      }
+      section.classList.remove("your-active-class");
+      //change background color is class is not active
+      section.style.backgroundColor = "black";
     }
   }
 }
-// Scroll to section on link click
-window.addEventListener("scroll", inViewPort);
-
-//smooth scroll
-const sectionScroll = () => {
-  navbarList.addEventListener("click", (event) => {
-    if (event.target.dataset.nav) {
-      document.getElementById(`${event.target.dataset.nav}`).scrollIntoView({
-        behavior: "smooth"
-      });
-    }
+document.addEventListener("scroll", inViewPort);
+// Scroll to anchor ID using scrollTO event
+function sectionScroll(e) {
+  const destination = document.querySelector(e.target.hash)
+  const top = destination.getBoundingClientRect().top + window.scrollY;
+  e.preventDefault();
+  window.scrollTo({
+    top,
+    behavior: "smooth"
   });
 }
-sectionScroll();
+// Scroll to section on link click
+navbarList.addEventListener('click', sectionScroll);
+// Set sections as active
+setTimeout(document.addEventListener('scroll', activeSection), 0);
