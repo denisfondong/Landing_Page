@@ -18,7 +18,7 @@ navBuilder();
 function inViewPort() {
   for (let section of sections) {
     const box = section.getBoundingClientRect();
-    if (box.top < 150 && box.bottom > -150) {
+    if (box.top < 200 && box.bottom >400) {
       if (!section.classList.contains("your-active-class")) {
         section.classList.add("your-active-class");
         //change background color for active class
